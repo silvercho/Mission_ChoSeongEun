@@ -15,7 +15,7 @@ public class MissionChoSeongEunApplication {
     public static class TestController {
         @GetMapping("/")
         public String test(){
-            return "1Week";
+            return "1Week 리팩토링";
         }
     }
 }
