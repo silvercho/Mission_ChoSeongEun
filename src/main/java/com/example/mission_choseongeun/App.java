@@ -26,7 +26,7 @@ public class App {
                 String authorName = scanner.nextLine();
 
                 System.out.println(nextQuoteNumber + "번 명언이 등록 되었습니다.");
-
+                nextQuoteNumber++; //번호는 추가될 때 마다  계속 증가한다.
             }
         }
     }
