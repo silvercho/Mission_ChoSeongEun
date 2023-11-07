@@ -10,4 +10,5 @@ public class Quotation {
         this.content = content;
         this.authorName = authorName;
     }
+
 }
