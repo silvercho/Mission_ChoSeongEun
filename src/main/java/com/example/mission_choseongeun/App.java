@@ -11,6 +11,7 @@ public class App {
 
     public App() {
         scanner = new Scanner(System.in);
+        lastQuotationId =0;
         quotations = new ArrayList<>();
     }
 
@@ -29,6 +30,8 @@ public class App {
                 actionList();
             } else if (cmd.startsWith("삭제?")) { // "삭제?id="로 시작하는 명령을 처리
                 actionRemove(cmd);
+            } else if (cmd.startsWith("수정?")) {
+                actionModify(cmd);
             }
         }
     }
@@ -68,6 +71,15 @@ public class App {
         System.out.printf("%d번 명언을 삭제합니다.\n", id);
     }
 
+    void actionModify(String cmd) {
+        int id = getParamAsInt(cmd, "id" ,0);
+
+        if (id == 0) {
+            System.out.println("id를 정확히 입력해 주세요.");
+            return; // 함수를 끝낸다.
+        }
+        System.out.printf("%d번 명언을 수정합니다. \n",id );
+    }
     int getParamAsInt(String cmd, String paramName, int defaultValue){
         String[] cmdBits = cmd.split("\\?" ,2); //'?' 문자를 기준으로 최대 2개의 부분으로 나눈다. split 메서드는 문자열을 나누는 메서드이다.
         String queryString = cmdBits[1]; // cmd 문자열의 두번째 부분(인덱스1)을 가져와서 queryString 문자열에 저장.
