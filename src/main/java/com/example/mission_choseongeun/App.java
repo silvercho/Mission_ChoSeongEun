@@ -156,7 +156,6 @@ public class App {
         List<Quotation> quotes = null;
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
             quotes = (List<Quotation>) ois.readObject();
-            System.out.println("불러오기.");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             System.err.println("문제 발생");
