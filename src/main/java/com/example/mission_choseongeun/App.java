@@ -1,7 +1,10 @@
 package com.example.mission_choseongeun;
 
+import javax.imageio.IIOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class App {
@@ -12,7 +15,13 @@ public class App {
     public App() {
         scanner = new Scanner(System.in);
         lastQuotationId = 0;
-        quotations = new ArrayList<>();
+
+        //데이터 읽어오기
+        List<Quotation> loadedQuotes = loadQuotesFromFile("quotes.dat");
+        quotations = (loadedQuotes != null) ? loadedQuotes : new ArrayList<>();
+        if (loadedQuotes !=null){
+            lastQuotationId = quotations.get(quotations.size() -1).getId();
+        }
     }
 
     public void run() {
@@ -56,6 +65,8 @@ public class App {
         quotations.add(quotation);
 
         System.out.printf("%d번 명언이 등록 되었습니다. \n", lastQuotationId);
+        // 명언을 등록 후 파일저장
+        saveQuotesToFile("quotes.dat", quotations);
     }
 
     void actionList() {
@@ -87,6 +98,9 @@ public class App {
         quotations.remove(index);
 
         System.out.printf("%d번 명언이 삭제되었습니다.\n", id);
+
+        // 명언을 등록 후 파일저장
+        saveQuotesToFile("quotes.dat", quotations);
     }
     int getIndexOfQuotationById(int id) {
         for (int i = 0; i < quotations.size(); i++) {
@@ -125,6 +139,29 @@ public class App {
         quotation.authorName = newAuthorName;
 
         System.out.printf("%d번 명언을 수정했습니다.\n", id);
+        // 명언을 등록 후 파일저장
+        saveQuotesToFile("quotes.dat", quotations);
+    }
+
+    public void saveQuotesToFile(String fileName, List<Quotation> quotes) {
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            oos.writeObject(quotes);
+            System.out.println("저장");
+        } catch (IOException e){
+            e.printStackTrace();
+            System.out.println("문제 발생");
+        }
+    }
+    public List<Quotation> loadQuotesFromFile(String fileName){
+        List<Quotation> quotes = null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+            quotes = (List<Quotation>) ois.readObject();
+            System.out.println("불러오기.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            System.err.println("문제 발생");
+        }
+        return quotes;
     }
 }
 
